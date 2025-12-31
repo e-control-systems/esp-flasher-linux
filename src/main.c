@@ -4,7 +4,6 @@
 #include "esp_loader_io.h"
 #include "flasher_utils.h"
 #include "utils.h"
-#include <sys/stat.h>
 
 uint8_t *read_file(const char *fw_file, size_t *file_size)
 {
@@ -57,9 +56,7 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	// TODO read from arguments
-	uint32_t transmission_rate = DEFAULT_BAUDRATE;
-	if (connect_to_target(transmission_rate) != ESP_LOADER_SUCCESS) {
+	if (connect_to_target(args.transmission_rate) != ESP_LOADER_SUCCESS) {
 		free(fw_data);
 		return EXIT_FAILURE;
 	}

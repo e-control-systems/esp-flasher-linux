@@ -18,6 +18,7 @@ typedef struct {
 	int bootsel_line;
 	const char *device;
 	const char *fw_file;
+	uint32_t transmission_rate;
 } args_t;
 
 void parse_args(args_t *args, int argc, char **argv);
