@@ -1,7 +1,8 @@
 # Create your executable
-add_executable(esp_flasher 
+add_executable(esp-flasher 
     main.c
     flasher_utils.c
+    utils.c
 )
 
 # Add port implementation directly to flasher target
@@ -10,7 +11,7 @@ target_sources(flasher PRIVATE
 )
 
 # Set up include directories
-target_include_directories(esp_flasher PRIVATE
+target_include_directories(esp-flasher PRIVATE
     ${CMAKE_SOURCE_DIR}/external/esp-serial-flasher/include
 )
 
@@ -21,4 +22,4 @@ target_include_directories(flasher PRIVATE
 )
 
 # Link ESP Serial Flasher
-target_link_libraries(esp_flasher PRIVATE flasher gpiod)
+target_link_libraries(esp-flasher PRIVATE flasher gpiod)

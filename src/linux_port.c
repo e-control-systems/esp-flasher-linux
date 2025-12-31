@@ -158,22 +158,22 @@ static int serial_open(const char *device, uint32_t baudrate)
 
 static esp_loader_error_t change_baudrate(int file_desc, int baudrate)
 {
-    struct termios options;
-    speed_t baud = convert_baudrate(baudrate);
+	struct termios options;
+	speed_t baud = convert_baudrate(baudrate);
 
-    if (baud < 0) {
-        return ESP_LOADER_ERROR_INVALID_PARAM;
-    }
+	if (baud < 0) {
+		return ESP_LOADER_ERROR_INVALID_PARAM;
+	}
 
-    tcgetattr (file_desc, &options);
+	tcgetattr(file_desc, &options);
 
-    cfmakeraw   (&options) ;
-    cfsetispeed (&options, baud);
-    cfsetospeed (&options, baud);
+	cfmakeraw(&options);
+	cfsetispeed(&options, baud);
+	cfsetospeed(&options, baud);
 
-    tcsetattr (file_desc, TCSANOW, &options);
+	tcsetattr(file_desc, TCSANOW, &options);
 
-    return ESP_LOADER_SUCCESS;
+	return ESP_LOADER_SUCCESS;
 }
 
 static void set_timeout(uint32_t timeout)
@@ -390,5 +390,5 @@ void loader_port_debug_print(const char *str)
 
 esp_loader_error_t loader_port_change_transmission_rate(uint32_t baudrate)
 {
-    return change_baudrate(serial, baudrate);
+	return change_baudrate(serial, baudrate);
 }
