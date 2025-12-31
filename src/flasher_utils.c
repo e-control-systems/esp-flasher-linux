@@ -21,7 +21,7 @@
 #include <assert.h>
 #include "esp_loader_io.h"
 #include "esp_loader.h"
-#include "utils.h"
+#include "flasher_utils.h"
 
 #define BIN_HEADER_SIZE    0x8
 #define BIN_HEADER_EXT_SIZE 0x18

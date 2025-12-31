@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "linux_port.h"
 #include "esp_loader_io.h"
-#include "utils.h"
+#include "flasher_utils.h"
 
 #define DEFAULT_RESET_CHIP "gpiochip0"
 #define DEFAULT_TRIGGER_CHIP "gpiochip0"

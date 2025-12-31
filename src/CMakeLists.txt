@@ -1,7 +1,7 @@
 # Create your executable
 add_executable(esp_flasher 
     main.c
-    utils.c
+    flasher_utils.c
 )
 
 # Add port implementation directly to flasher target
