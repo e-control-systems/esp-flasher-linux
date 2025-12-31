@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <stdlib.h>
+#include "config.h"
 #include <errno.h>
 
 #define DEFAULT_RESET_CHIP "gpiochip0"
@@ -51,14 +52,6 @@ void print_chip_name(target_chip_t chip)
 	}
 }
 
-void print_usage_oneline(FILE *file)
-{
-	fprintf(file,
-		"usage: %s [-h] [-v] [-R GPIOCHIP] -r GPIOLINE [-B GPIOCHIP] -b GPIOLINE "
-		"-d DEVICE firmware\n",
-		exec_name);
-}
-
 void print_help()
 {
 	printf("\nusage: %s [-h] [-v] [-R GPIOCHIP] -r GPIOLINE [-B GPIOCHIP] -b"
@@ -96,7 +89,7 @@ void print_missing_arg_error(const char *missing_arg)
 	fprintf(stderr,
 		"usage: %s [-h] [-v] [-R GPIOCHIP] -r GPIOLINE [-B GPIOCHIP] -b GPIOLINE -d DEVICE [-s DEVICE] firmware\n",
 		exec_name);
-	fprintf(stderr, "%s: error: argument '%s' is required.\n", APPNAME,
+	fprintf(stderr, "%s: error: argument '%s' is required.\n", PROJECT_NAME,
 		missing_arg);
 }
 
@@ -135,7 +128,7 @@ void parse_args(args_t *args, int argc, char **argv)
 			break;
 
 		case 'v':
-			printf("%s %s\r\n", APPNAME, VERSION);
+			printf("%s %s\r\n", PROJECT_NAME, PROJECT_VERSION);
 			exit(EXIT_SUCCESS);
 			break;
 

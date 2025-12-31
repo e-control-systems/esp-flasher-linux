@@ -4,10 +4,23 @@
 #include "esp_loader_io.h"
 #include "flasher_utils.h"
 #include "utils.h"
+#include "config.h"
 
-uint8_t *read_file(const char *fw_file, size_t *file_size)
+/**
+ * @brief read contents of a file to memory
+ * 
+ * @note this function allocates memory in the heap, 
+ * 		 make sure to free memory
+ * 
+ * @param file_path file to read contents from
+ * @param file_size pointer to store file length
+ * 
+ * @return pointer with file contents on success
+ * @return NULL on failure 
+ */
+uint8_t *read_file(const char *file_path, size_t *file_size)
 {
-	FILE *fp = fopen(fw_file, "rb");
+	FILE *fp = fopen(file_path, "rb");
 	if (fp == NULL) {
 		perror("Failed to open firmware file");
 		return NULL;
