@@ -18,7 +18,7 @@ add_subdirectory(external/esp-serial-flasher)
 
 add_subdirectory(src)
 
-option(PACKAGE "Generate Debian package" ON)
+option(PACKAGE "Add packaging configurations" ON)
 if(PACKAGE)
     message(STATUS "Adding packaing")
     add_subdirectory(packaging)

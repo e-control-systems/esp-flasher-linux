@@ -9,14 +9,15 @@
 /**
  * @brief read contents of a file to memory
  * 
- * @note this function allocates memory in the heap, 
- * 		 make sure to free memory
+ * @attention this function allocates memory in the heap, 
+ * 		 make sure to free the memory
  * 
  * @param file_path file to read contents from
  * @param file_size pointer to store file length
  * 
- * @return pointer with file contents on success
- * @return NULL on failure 
+ * @return 
+ *     - pointer with file contents on Success
+ *     - NULL on failure
  */
 uint8_t *read_file(const char *file_path, size_t *file_size)
 {
