@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "linux_port.h"
 #include "esp_loader_io.h"
-#include "example_common.h"
+#include "utils.h"
 
 #define DEFAULT_RESET_CHIP "gpiochip0"
 #define DEFAULT_TRIGGER_CHIP "gpiochip0"

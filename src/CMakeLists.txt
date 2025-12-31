@@ -1,7 +1,7 @@
 # Create your executable
 add_executable(esp_flasher 
     main.c
-    ${CMAKE_SOURCE_DIR}/external/esp-serial-flasher/examples/common/example_common.c
+    utils.c
 )
 
 # Add port implementation directly to flasher target
@@ -12,7 +12,6 @@ target_sources(flasher PRIVATE
 # Set up include directories
 target_include_directories(esp_flasher PRIVATE
     ${CMAKE_SOURCE_DIR}/external/esp-serial-flasher/include
-    ${CMAKE_SOURCE_DIR}/external/esp-serial-flasher/examples/common
 )
 
 target_include_directories(flasher PRIVATE
