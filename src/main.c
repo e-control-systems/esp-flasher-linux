@@ -23,7 +23,7 @@ uint8_t *read_file(const char *file_path, size_t *file_size)
 {
 	FILE *fp = fopen(file_path, "rb");
 	if (fp == NULL) {
-		perror("Failed to open firmware file");
+		perror("Failed to open file");
 		return NULL;
 	}
 	fseek(fp, 0, SEEK_END);
@@ -38,23 +38,30 @@ uint8_t *read_file(const char *file_path, size_t *file_size)
 	return buffer;
 }
 
+int write_file(const size_t addr, const char *file_path)
+{
+	size_t fw_size;
+	uint8_t *fw_data = read_file(file_path, &fw_size);
+	if (!fw_data) {
+		return ESP_LOADER_ERROR_FAIL;
+	}
+	(void)printf("Flashing firmware...\n");
+	esp_loader_error_t err = flash_binary(fw_data, fw_size, addr);
+	free(fw_data);
+
+	return ESP_LOADER_SUCCESS;
+}
+
 int main(int argc, char **argv)
 {
 	args_t args;
-	parse_args(&args, argc, argv);
+	int fw_list_index = parse_args(&args, argc, argv);
 
-	printf("Reset         => chip: %s \t line: %d\r\n", args.reset_chip,
-	       args.reset_line);
-	printf("Boot select   => chip: %s \t line: %d\r\n", args.bootsel_chip,
-	       args.bootsel_line);
-	printf("Serial Device => %s\r\n", args.device);
-	printf("Firmware      => %s\r\n", args.fw_file);
-
-	size_t fw_size;
-	uint8_t *fw_data = read_file(args.fw_file, &fw_size);
-	if (!fw_data) {
-		return EXIT_FAILURE;
-	}
+	(void)printf("Reset         => chip: %s \t line: %d\r\n",
+		     args.reset_chip, args.reset_line);
+	(void)printf("Boot select   => chip: %s \t line: %d\r\n",
+		     args.bootsel_chip, args.bootsel_line);
+	(void)printf("Serial Device => %s\r\n", args.device);
 
 	const loader_linux_config_t config = {
 		.device = args.device,
@@ -66,26 +73,34 @@ int main(int argc, char **argv)
 	};
 
 	if (linux_loader_port_init(&config) != ESP_LOADER_SUCCESS) {
-		free(fw_data);
 		return EXIT_FAILURE;
 	}
 
 	if (connect_to_target(args.transmission_rate) != ESP_LOADER_SUCCESS) {
-		free(fw_data);
+		linux_loader_port_deinit();
 		return EXIT_FAILURE;
 	}
-	printf("Idetifying chip...\n");
+	(void)printf("Idetifying chip...\n");
 	target_chip_t chip = esp_loader_get_target();
-	printf("Chip identified as ");
+	(void)printf("Chip identified as ");
 	print_chip_name(chip);
 
-	printf("Flashing firmware...\n");
-	flash_binary(fw_data, fw_size, 0x00);
-	printf("Done!\n");
-	esp_loader_reset_target();
+	for (; fw_list_index < argc; fw_list_index += 2) {
+		unsigned long addr = strtoul(argv[fw_list_index], NULL, 0);
+		const char *filename = argv[fw_list_index + 1];
+		(void)printf("Writing %s to 0x%lx\n", filename, addr);
+		esp_loader_error_t err = write_file(addr, filename);
+		if (err != ESP_LOADER_SUCCESS) {
+			perror("Failed to write file");
+			esp_loader_reset_target();
+			linux_loader_port_deinit();
+			return EXIT_FAILURE;
+		}
+	}
+	(void)printf("Done!\n");
 
+	esp_loader_reset_target();
 	linux_loader_port_deinit();
 
-	free(fw_data);
 	return EXIT_SUCCESS;
 }

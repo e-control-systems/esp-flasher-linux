@@ -4,6 +4,7 @@
 #include <getopt.h>
 #include <stdlib.h>
 #include "config.h"
+#include <stdbool.h>
 #include <errno.h>
 
 #define DEFAULT_RESET_CHIP "gpiochip0"
@@ -15,85 +16,93 @@ void print_chip_name(target_chip_t chip)
 {
 	switch (chip) {
 	case ESP8266_CHIP:
-		printf("ESP8266\n");
+		(void)printf("ESP8266\n");
 		break;
 	case ESP32_CHIP:
-		printf("ESP32\n");
+		(void)printf("ESP32\n");
 		break;
 	case ESP32S2_CHIP:
-		printf("ESP32 S2\n");
+		(void)printf("ESP32 S2\n");
 		break;
 	case ESP32C3_CHIP:
-		printf("ESP32 C3\n");
+		(void)printf("ESP32 C3\n");
 		break;
 	case ESP32S3_CHIP:
-		printf("ESP32 S3\n");
+		(void)printf("ESP32 S3\n");
 		break;
 	case ESP32C2_CHIP:
-		printf("ESP32 C2\n");
+		(void)printf("ESP32 C2\n");
 		break;
 	case ESP32C5_CHIP:
-		printf("ESP32 C5\n");
+		(void)printf("ESP32 C5\n");
 		break;
 	case ESP32H2_CHIP:
-		printf("ESP32 H2\n");
+		(void)printf("ESP32 H2\n");
 		break;
 	case ESP32C6_CHIP:
-		printf("ESP32 C6\n");
+		(void)printf("ESP32 C6\n");
 		break;
 	case ESP32P4_CHIP:
-		printf("ESP32 P4\n");
+		(void)printf("ESP32 P4\n");
 		break;
 	case ESP_MAX_CHIP:
-		printf("ESP32 MAX\n");
+		(void)printf("ESP32 MAX\n");
 		break;
 	default:
-		printf("Unknown Chip");
+		(void)printf("Unknown Chip");
 	}
 }
 
 void print_help()
 {
-	printf("\nusage: %s [-h] [-v] [-R GPIOCHIP] -r GPIOLINE [-B GPIOCHIP] -b"
-	       "\n                   GPIOLINE -d DEVICE [-s BAUDRATE]"
-	       "\n                   firmware"
-	       "\n",
-	       exec_name);
-	printf("\nLinux utility to program ESP Family of microcontrollers"
-	       "\n"
-	       "\npositional arguments:"
-	       "\n  firmware              merged firmware file for flashing"
-	       "\n"
-	       "\noptions:"
-	       "\n  -h, --help            show this help message and exit"
-	       "\n  -v, --version         show program's version number and exit"
-	       "\n  -R GPIOCHIP, --reset-chip GPIOCHIP"
-	       "\n                        reset pin GPIO character device (default: gpiochip0)"
-	       "\n  -r GPIOLINE, --reset-line GPIOLINE"
-	       "\n                        reset pin GPIO line "
-	       "\n  -B GPIOCHIP, --bootsel-chip GPIOCHIP"
-	       "\n                        boot select pin GPIO character device (default:"
-	       "\n                        gpiochip0)"
-	       "\n  -b GPIOLINE, --bootsel-line GPIOLINE"
-	       "\n                        boot select pin GPIO line "
-	       "\n  -d DEVICE, --device DEVICE"
-	       "\n                        serial device for sending file "
-	       "\n  -s BAUDRATE, --speed BAUDRATE"
-	       "\n                        transmission rate to use after initial sync to speed"
-	       "\n                        up transfers (default: 115200)"
-	       "\n");
+	(void)printf(
+		"\nusage: %s [-h] [-v] [-R GPIOCHIP] -r GPIOLINE [-B GPIOCHIP] "
+		"\n                   -b GPIOLINE -d DEVICE [-s BAUDRATE]"
+		"\n                   <address> <filename> [<address> <filename> ...]"
+		"\n",
+		exec_name);
+	(void)printf(
+		"\nLinux utility to program ESP Family of microcontrollers"
+		"\n"
+		"\npositional arguments:"
+		"\n  <address> <filename>  Address followed by binary filename, separated by space"
+		"\n"
+		"\noptions:"
+		"\n  -h, --help            show this help message and exit"
+		"\n  -v, --version         show program's version number and exit"
+		"\n  -R GPIOCHIP, --reset-chip GPIOCHIP"
+		"\n                        reset pin GPIO character device (default: gpiochip0)"
+		"\n  -r GPIOLINE, --reset-line GPIOLINE"
+		"\n                        reset pin GPIO line "
+		"\n  -B GPIOCHIP, --bootsel-chip GPIOCHIP"
+		"\n                        boot select pin GPIO character device (default:"
+		"\n                        gpiochip0)"
+		"\n  -b GPIOLINE, --bootsel-line GPIOLINE"
+		"\n                        boot select pin GPIO line "
+		"\n  -d DEVICE, --device DEVICE"
+		"\n                        serial device for sending file "
+		"\n  -s BAUDRATE, --speed BAUDRATE"
+		"\n                        transmission rate to use after initial sync to speed"
+		"\n                        up transfers (default: 115200)"
+		"\n");
+}
+
+void print_usage_err()
+{
+	(void)fprintf(
+		stderr,
+		"usage: %s [-h] [-v] [-R GPIOCHIP] -r GPIOLINE [-B GPIOCHIP] -b GPIOLINE -d DEVICE [-s DEVICE] <address> <filename> [<address> <filename> ...]\n",
+		exec_name);
 }
 
 void print_missing_arg_error(const char *missing_arg)
 {
-	fprintf(stderr,
-		"usage: %s [-h] [-v] [-R GPIOCHIP] -r GPIOLINE [-B GPIOCHIP] -b GPIOLINE -d DEVICE [-s DEVICE] firmware\n",
-		exec_name);
-	fprintf(stderr, "%s: error: argument '%s' is required.\n", PROJECT_NAME,
-		missing_arg);
+	print_usage_err();
+	(void)fprintf(stderr, "%s: error: argument '%s' is required.\n",
+		      PROJECT_NAME, missing_arg);
 }
 
-void parse_args(args_t *args, int argc, char **argv)
+int parse_args(args_t *args, int argc, char **argv)
 {
 	exec_name = argv[0];
 	*args = (args_t){
@@ -102,7 +111,6 @@ void parse_args(args_t *args, int argc, char **argv)
 		.bootsel_chip = DEFAULT_BOOTSEL_CHIP,
 		.bootsel_line = -1,
 		.device = NULL,
-		.fw_file = NULL,
 		.transmission_rate = DEFAULT_BAUDRATE,
 	};
 
@@ -128,7 +136,8 @@ void parse_args(args_t *args, int argc, char **argv)
 			break;
 
 		case 'v':
-			printf("%s %s\r\n", PROJECT_NAME, PROJECT_VERSION);
+			(void)printf("%s %s\r\n", PROJECT_NAME,
+				     PROJECT_VERSION);
 			exit(EXIT_SUCCESS);
 			break;
 
@@ -152,24 +161,9 @@ void parse_args(args_t *args, int argc, char **argv)
 			args->device = optarg;
 			break;
 
-		case 's': {
-			char *end;
-			errno = 0;
-			args->transmission_rate = strtoul(optarg, &end, 10);
-			if (end == optarg) {
-				fprintf(stderr,
-					"error parsing transmission rate. no digits were found.\n");
-				exit(EXIT_FAILURE);
-			} else if (*end != '\0') {
-				fprintf(stderr,
-					"error parsing transmission rate. extra characters at the end of the string.\n");
-				exit(EXIT_FAILURE);
-			} else if (errno == ERANGE) {
-				fprintf(stderr,
-					"error parsing transmission rate. out of range.\n");
-				exit(EXIT_FAILURE);
-			}
-		} break;
+		case 's':
+			args->transmission_rate = strtoul(optarg, NULL, 0);
+			break;
 		}
 	}
 
@@ -178,7 +172,7 @@ void parse_args(args_t *args, int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 	if (args->bootsel_line == -1) {
-		print_missing_arg_error("-t/--trigger-line");
+		print_missing_arg_error("-b/--bootsel-line");
 		exit(EXIT_FAILURE);
 	}
 	if (args->device == NULL) {
@@ -186,8 +180,18 @@ void parse_args(args_t *args, int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 	if (argc == optind) {
-		print_missing_arg_error("firmware");
+		print_missing_arg_error("<address> <filename>");
 		exit(EXIT_FAILURE);
 	}
-	args->fw_file = argv[optind];
+	if ((argc - optind) % 2 != 0) {
+		print_usage_err();
+		(void)fprintf(
+			stderr,
+			"%s: error: argument <address> <filename>: Must be pairs of an "
+			"address and the binary filename to write there\n",
+			PROJECT_NAME);
+		exit(EXIT_FAILURE);
+	}
+
+	return optind;
 }

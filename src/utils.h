@@ -17,7 +17,6 @@ typedef struct {
 	const char *bootsel_chip; /**< esp bootsel trigger line's chip */
 	int bootsel_line; /**< esp bootsel trigger line */
 	const char *device; /**< serial device for flashing */
-	const char *fw_file; /**< firmware file */
 	uint32_t transmission_rate; /**< higher transmission rate for communicating with esp */
 } args_t;
 
@@ -27,8 +26,10 @@ typedef struct {
  * @param args args_t pointer to store parsed arguments
  * @param argc argument count (argc from main)
  * @param argv argument value list (argv from main)
+ * @return int starting index of address-file pairs
  */
-void parse_args(args_t *args, int argc, char **argv);
+int parse_args(args_t *args, int argc, char **argv);
+
 /**
  * @brief prints string value of esp chip
  * 
