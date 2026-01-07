@@ -49,14 +49,14 @@ popd
 ## Usage
 
 ```sh
-usage: esp-flasher [-h] [-v] [-R GPIOCHIP] -r GPIOLINE [-B GPIOCHIP] -b
-                   GPIOLINE -d DEVICE [-s BAUDRATE]
-                   firmware
+usage: esp-flasher [-h] [-v] [-R GPIOCHIP] -r GPIOLINE [-B GPIOCHIP] 
+                   -b GPIOLINE -d DEVICE [-s BAUDRATE]
+                   <address> <filename> [<address> <filename> ...]
 
 Linux utility to program ESP Family of microcontrollers
 
 positional arguments:
-  firmware              merged firmware file for flashing
+  <address> <filename>  Address followed by binary filename, separated by space
 
 options:
   -h, --help            show this help message and exit
