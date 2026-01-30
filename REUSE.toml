@@ -1,0 +1,16 @@
+version = 1
+SPDX-PackageDownloadLocation = "https://github.com/e-control-systems/esp-flasher-linux"
+
+[[annotations]]
+path = [
+    "src/flasher_utils.c",
+    "src/flasher_utils.h",
+]
+precedence = "aggregate"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = ".clang-format"
+precedence = "override"
+SPDX-License-Identifier = "GPL-2.0-only"
+SPDX-FileCopyrightText = "2018 Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>"

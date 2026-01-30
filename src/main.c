@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 E-Control Systems
+//
+// SPDX-License-Identifier: Apache-2.0
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "linux_port.h"

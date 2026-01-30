@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 E-Control Systems
+#
+# SPDX-License-Identifier: Apache-2.0
+
 # Create your executable
 add_executable(${PROJECT_NAME} 
     main.c

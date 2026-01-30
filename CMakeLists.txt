@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 E-Control Systems
+#
+# SPDX-License-Identifier: Apache-2.0
+
 cmake_minimum_required(VERSION 3.16)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 

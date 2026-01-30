@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 E-Control Systems
+//
+// SPDX-License-Identifier: Apache-2.0
+
 #pragma once
 
 #define DEFAULT_BAUDRATE 115200

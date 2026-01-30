@@ -1,5 +1,13 @@
+<!--
+SPDX-FileCopyrightText: 2026 E-Control Systems
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 <!-- omit in toc -->
 # ESP Flasher Linux
+
+[![REUSE status](https://api.reuse.software/badge/github.com/e-control-systems/esp-flasher-linux)](https://api.reuse.software/info/github.com/e-control-systems/esp-flasher-linux)
 
 Linux utility to program ESP Family of microcontrollers
 

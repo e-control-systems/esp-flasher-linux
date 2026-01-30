@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 E-Control Systems
+#
+# SPDX-License-Identifier: Apache-2.0
+
 set(CPACK_PACKAGE_NAME                  ${PROJECT_NAME})
 set(CPACK_PACKAGE_VENDOR                "E-Control Systems")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER     "${CPACK_PACKAGE_VENDOR} <info@econtrolsystems.com>")
