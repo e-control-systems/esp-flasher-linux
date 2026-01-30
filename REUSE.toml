@@ -14,3 +14,8 @@ path = ".clang-format"
 precedence = "override"
 SPDX-License-Identifier = "GPL-2.0-only"
 SPDX-FileCopyrightText = "2018 Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>"
+
+[[annotations]]
+path = ".vscode/settings.json"
+SPDX-FileCopyrightText = "2026 E-Control Systems"
+SPDX-License-Identifier = "Apache-2.0"
